@@ -46,7 +46,7 @@ def bb_pad_collate(samples:BatchSamples, pad_idx:int=0) -> Tuple[FloatTensor, Tu
     for i,s in enumerate(samples):
         imgs.append(s[0].data[None])
         bbs, lbls = s[1].data
-        bboxes[i,-len(lbls):] = bbs
+        bboxes[i,-len(lbls):] = bbs if bbs.size(0) != 0 else 0
         labels[i,-len(lbls):] = lbls
     return torch.cat(imgs,0), (bboxes,labels)
 
