@@ -355,7 +355,10 @@ class ImageBBox(ImagePoints):
     @property
     def data(self)->Union[FloatTensor, Tuple[FloatTensor,LongTensor]]:
         bboxes,lbls = self._compute_boxes()
-        lbls = tensor([o.data for o in lbls]) if lbls.size != 0 else tensor([0])
+        if lbls is not None:
+            lbls = tensor([o.data for o in lbls]) if lbls.size != 0 else tensor([0])
+        else:
+            lbls = None
         return bboxes if lbls is None else (bboxes, lbls)
 
     def show(self, y:Image=None, ax:plt.Axes=None, figsize:tuple=(3,3), title:Optional[str]=None, hide_axis:bool=True,
